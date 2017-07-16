@@ -12,7 +12,7 @@ const reload = browserSync.reload;
 let dev = true;
 
 gulp.task('styles', () => {
-  return gulp.src('app/styles/*.scss')
+  return gulp.src(['app/styles/*.scss', 'app/device-mockups/*.css'])
     .pipe($.plumber())
     .pipe($.if(dev, $.sourcemaps.init()))
     .pipe($.sass.sync({
@@ -72,9 +72,13 @@ gulp.task('html', ['styles', 'scripts'], () => {
 });
 
 gulp.task('images', () => {
-  return gulp.src('app/images/**/*')
+  gulp.src('app/images/**/*')
     .pipe($.cache($.imagemin()))
     .pipe(gulp.dest('dist/images'));
+
+  gulp.src('app/device-mockups/iphone_6/*.png')
+    .pipe($.cache($.imagemin()))
+    .pipe(gulp.dest('dist/styles/iphone_6/'))
 });
 
 gulp.task('fonts', () => {
